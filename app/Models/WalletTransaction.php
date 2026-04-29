@@ -9,20 +9,12 @@ class WalletTransaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id', 'type', 'amount',
-        'balance_after', 'description',
-        'reference_id', 'reference_type',
-    ];
+    protected $fillable = ['user_id', 'type', 'amount', 'balance_after', 'reference_type', 'reference_id', 'description'];
 
-    protected $casts = [
-        'amount' => 'decimal:2',
-        'balance_after' => 'decimal:2',
-    ];
+    protected $casts = ['amount' => 'decimal:2', 'balance_after' => 'decimal:2'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 }
-

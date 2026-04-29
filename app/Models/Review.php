@@ -7,16 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'restaurant_id', 'order_id',
-        'rating', 'comment', 'is_approved',
+        'order_id', 'user_id', 'restaurant_id', 'food_rating', 'delivery_rating',
+        'packaging_rating', 'overall_rating', 'comment', 'images', 'is_anonymous',
+        'replied_by', 'reply', 'replied_at',
     ];
 
     protected $casts = [
-        'rating' => 'decimal:2',
-        'is_approved' => 'boolean',
+        'images' => 'array',
+        'is_anonymous' => 'boolean',
+        'replied_at' => 'datetime',
+        'overall_rating' => 'decimal:2',
     ];
 
     public function user()

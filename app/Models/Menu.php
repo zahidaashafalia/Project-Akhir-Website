@@ -11,17 +11,21 @@ class Menu extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'restaurant_id', 'menu_group_id', 'name', 'description',
-        'price', 'discount_price', 'image', 'is_available',
-        'is_featured', 'sort_order',
+        'restaurant_id', 'menu_group_id', 'name', 'slug', 'description',
+        'image', 'price', 'discount_price', 'is_available', 'is_best_seller',
+        'is_new', 'is_spicy', 'is_halal', 'is_vegetarian', 'calories',
+        'rating', 'total_ordered', 'sort_order',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
         'is_available' => 'boolean',
-        'is_featured' => 'boolean',
-        'sort_order' => 'integer',
+        'is_best_seller' => 'boolean',
+        'is_new' => 'boolean',
+        'is_spicy' => 'boolean',
+        'is_halal' => 'boolean',
+        'is_vegetarian' => 'boolean',
     ];
 
     public function restaurant()
@@ -34,35 +38,40 @@ class Menu extends Model
         return $this->belongsTo(MenuGroup::class);
     }
 
+    public function optionGroups()
+    {
+        return $this->hasMany(MenuOptionGroup::class);
+    }
+
     public function getImageUrlAttribute(): string
     {
-        return $this->image ? asset('storage/' . $this->image) : asset('images/menu-default.png');
-    }
-
-    public function hasDiscount(): bool
-    {
-        return $this->discount_price !== null && $this->discount_price > 0 && $this->discount_price < $this->price;
-    }
-
-    public function getDiscountPercentageAttribute(): int
-    {
-        if (!$this->hasDiscount() || $this->price == 0) return 0;
-        return (int) round((($this->price - $this->discount_price) / $this->price) * 100);
+        return $this->image ? asset('storage/' . $this->image) : asset('images/food-default.png');
     }
 
     public function getEffectivePriceAttribute(): float
     {
-        return $this->hasDiscount() ? (float) $this->discount_price : (float) $this->price;
+        return $this->discount_price ?? $this->price;
     }
 
-    public function getEffectivePriceFormattedAttribute(): string
+    public function hasDiscount(): bool
     {
-        return 'Rp ' . number_format($this->effective_price, 0, ',', '.');
+        return !is_null($this->discount_price) && $this->discount_price < $this->price;
+    }
+
+    public function getDiscountPercentageAttribute(): int
+    {
+        if (!$this->hasDiscount()) return 0;
+        return (int) round((($this->price - $this->discount_price) / $this->price) * 100);
     }
 
     public function getPriceFormattedAttribute(): string
     {
         return 'Rp ' . number_format($this->price, 0, ',', '.');
+    }
+
+    public function getEffectivePriceFormattedAttribute(): string
+    {
+        return 'Rp ' . number_format($this->effective_price, 0, ',', '.');
     }
 }
 

@@ -555,19 +555,23 @@
                     <div>
                         <div class="hero-stat-value">500+</div>
                         <div class="hero-stat-label">Restoran</div>
+                    </div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-icon">🛵</div>
                     <div>
                         <div class="hero-stat-value">30 mnt</div>
                         <div class="hero-stat-label">Rata-rata antar</div>
+                    </div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-icon">⭐</div>
                     <div>
                         <div class="hero-stat-value">4.9/5</div>
                         <div class="hero-stat-label">Rating Layanan</div>
+                    </div>
                 </div>
+            </div>
         </div>
 
         <div class="hero-visual">
@@ -578,13 +582,16 @@
                     <strong>Pesanan Otw!</strong>
                     <small>Est. 15 menit lagi</small>
                 </div>
+            </div>
             <div class="hero-float-card hero-float-2">
                 <span class="hero-float-icon">⭐</span>
                 <div class="hero-float-text">
                     <strong>Ayam Geprek Juara</strong>
                     <small>4.9 • 2.3rb ulasan</small>
                 </div>
+            </div>
         </div>
+    </div>
 </section>
 
 <!-- PROMO BANNERS -->
@@ -600,6 +607,7 @@
                     <a href="{{ route('promo') }}" class="promo-slide-btn">Ambil Voucher <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="promo-slide-deco">🎁</div>
+            </div>
             @endforeach
 
             <!-- Default promo slides -->
@@ -611,6 +619,7 @@
                     <a href="{{ route('register') }}" class="promo-slide-btn">Daftar Sekarang <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="promo-slide-deco">🎊</div>
+            </div>
             <div class="promo-slide" style="background:linear-gradient(135deg,#06D6A0,#0AB47B)">
                 <div class="promo-slide-content">
                     <span class="promo-slide-tag">⚡ Flash Sale</span>
@@ -619,6 +628,7 @@
                     <a href="{{ route('promo') }}" class="promo-slide-btn">Lihat Flash Sale <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="promo-slide-deco">⚡</div>
+            </div>
             <div class="promo-slide" style="background:linear-gradient(135deg,#F59E0B,#D97706)">
                 <div class="promo-slide-content">
                     <span class="promo-slide-tag">💰 Cashback</span>
@@ -627,7 +637,9 @@
                     <a href="{{ route('account.wallet') }}" class="promo-slide-btn">Top Up Sekarang <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="promo-slide-deco">💎</div>
+            </div>
         </div>
+    </div>
 </section>
 
 <!-- CATEGORIES -->
@@ -638,6 +650,7 @@
                 <h2 class="section-title">🍽️ Kategori Makanan</h2>
                 <p class="section-subtitle">Pilih sesuai selera kamu</p>
             </div>
+        </div>
         <div class="categories-scroll">
             <a href="{{ route('search') }}" class="category-item">
                 <div class="category-item-icon" style="border-color:var(--primary);background:var(--primary-pale)">🍽️</div>
@@ -674,6 +687,7 @@
                     <span class="countdown-unit" id="cm">45</span>:
                     <span class="countdown-unit" id="cs">30</span>
                 </div>
+            </div>
             <a href="{{ route('promo') }}" class="section-link">Lihat semua <i class="fas fa-chevron-right"></i></a>
         </div>
 
@@ -699,8 +713,10 @@
                         + Keranjang
                     </button>
                 </div>
+            </div>
             @endforeach
         </div>
+    </div>
 </section>
 @endif
 
@@ -737,17 +753,22 @@
                         <div class="restaurant-card-info">
                             <div class="restaurant-name">{{ $restaurant->name }}</div>
                             <div class="restaurant-category">{{ $restaurant->categories->pluck('name')->join(', ') }}</div>
+                        </div>
                     </div>
                     <div class="restaurant-meta">
                         <div class="meta-item"><i class="fas fa-star rating-star"></i> <strong>{{ number_format($restaurant->rating, 1) }}</strong> ({{ $restaurant->total_reviews }})</div>
                         <div class="meta-item"><i class="far fa-clock" style="color:var(--text-light)"></i> {{ $restaurant->estimated_delivery_time }} mnt</div>
+                    </div>
+                </div>
                         <div class="meta-item {{ $restaurant->delivery_fee == 0 ? 'free-delivery' : '' }}">
                             {{ $restaurant->delivery_fee_formatted }}
                         </div>
+                    </div>
                 </div>
             </a>
             @endforeach
         </div>
+    </div>
 </section>
 @endif
 
@@ -774,7 +795,9 @@
                     <div class="restaurant-meta" style="margin-top:6px">
                         <div class="meta-item"><i class="fas fa-star rating-star"></i> {{ number_format($restaurant->rating, 1) }}</div>
                         <div class="meta-item"><i class="far fa-clock" style="color:var(--text-light)"></i> {{ $restaurant->estimated_delivery_time }} mnt</div>
+                    </div>
                 </div>
+    </div>
             </a>
             @endforeach
         </div>
@@ -786,7 +809,7 @@
     <div class="container">
         <div class="section-header">
             <div>
-                <h2 class="section-title">🔥 Paling Populer</h2>
+                <h2 class="section-title"> Paling Populer</h2>
                 <p class="section-subtitle">Favorit semua orang, jangan sampai ketinggalan!</p>
             </div>
             <a href="{{ route('search', ['sort' => 'popular']) }}" class="section-link">Lihat semua <i class="fas fa-chevron-right"></i></a>
@@ -803,12 +826,20 @@
                         <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
                             <span style="background:var(--primary);color:#fff;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">#{{ $i+1 }}</span>
                             <div class="restaurant-name" style="font-size:14px">{{ $restaurant->name }}</div>
+                        </div>
                         <div style="font-size:12px;color:var(--text-gray)">{{ $restaurant->categories->pluck('name')->join(', ') }}</div>
-                    <div>
-                        <div class="restaurant-meta">
+                        <div class="restaurant-meta" style="margin-top:8px">
                             <div class="meta-item"><i class="fas fa-star rating-star"></i> <strong>{{ number_format($restaurant->rating, 1) }}</strong></div>
                             <div class="meta-item"><i class="far fa-clock" style="color:var(--text-light)"></i> {{ $restaurant->estimated_delivery_time }} mnt</div>
-                        <div style="font-size:12px;margin-top:4px;{{ $restaurant->delivery_fee == 0 ? 'color:var(--accent2);font-weight:700' : 'color:var(--text-gray)' }}">
-                            {{ $restaurant->delivery_fee_formatted }}
                         </div>
+                    </div>
+                    <div style="font-size:12px;margin-top:4px;{{ $restaurant->delivery_fee == 0 ? 'color:var(--accent2);font-weight:700' : 'color:var(--text-gray)' }}">
+                        {{ $restaurant->delivery_fee_formatted }}
+                    </div>
                 </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endsection

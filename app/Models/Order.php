@@ -11,24 +11,34 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'restaurant_id', 'order_number',
-        'status', 'payment_status', 'payment_method',
-        'subtotal', 'delivery_fee', 'service_fee',
-        'discount', 'total', 'notes',
-        'delivery_address', 'delivery_latitude', 'delivery_longitude',
-        'estimated_delivery_time', 'delivered_at',
-        'voucher_id', 'voucher_discount',
+        'order_number', 'user_id', 'restaurant_id', 'driver_id', 'address_id',
+        'voucher_id', 'subtotal', 'delivery_fee', 'service_fee', 'discount_amount',
+        'total_amount', 'status', 'payment_method', 'payment_status', 'payment_token',
+        'payment_url', 'paid_at', 'delivery_address', 'delivery_latitude',
+        'delivery_longitude', 'delivery_notes', 'estimated_delivery_at',
+        'delivered_at', 'cancellation_reason',
     ];
 
     protected $casts = [
         'subtotal' => 'decimal:2',
         'delivery_fee' => 'decimal:2',
         'service_fee' => 'decimal:2',
-        'discount' => 'decimal:2',
-        'total' => 'decimal:2',
-        'voucher_discount' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+        'estimated_delivery_at' => 'datetime',
         'delivered_at' => 'datetime',
-        'estimated_delivery_time' => 'datetime',
+    ];
+
+    const STATUSES = [
+        'pending' => ['label' => 'Menunggu Konfirmasi', 'color' => 'yellow', 'icon' => '⏳'],
+        'confirmed' => ['label' => 'Dikonfirmasi', 'color' => 'blue', 'icon' => '✅'],
+        'preparing' => ['label' => 'Sedang Dimasak', 'color' => 'orange', 'icon' => '👨‍🍳'],
+        'ready' => ['label' => 'Siap Diambil', 'color' => 'teal', 'icon' => '📦'],
+        'picked_up' => ['label' => 'Diambil Kurir', 'color' => 'purple', 'icon' => '🛵'],
+        'delivering' => ['label' => 'Sedang Diantar', 'color' => 'indigo', 'icon' => '🛵'],
+        'delivered' => ['label' => 'Terkirim', 'color' => 'green', 'icon' => '✅'],
+        'cancelled' => ['label' => 'Dibatalkan', 'color' => 'red', 'icon' => '❌'],
     ];
 
     public function user()
@@ -41,19 +51,57 @@ class Order extends Model
         return $this->belongsTo(Restaurant::class);
     }
 
-    public function items()
+    public function driver()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->belongsTo(User::class, 'driver_id');
     }
 
-    public function reviews()
+    public function address()
     {
-        return $this->hasMany(Review::class);
+        return $this->belongsTo(Address::class);
     }
 
     public function voucher()
     {
         return $this->belongsTo(Voucher::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function statusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class)->orderBy('created_at');
+    }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    public function getStatusInfoAttribute(): array
+    {
+        return self::STATUSES[$this->status] ?? ['label' => $this->status, 'color' => 'gray', 'icon' => '?'];
+    }
+
+    public function canBeCancelled(): bool
+    {
+        return in_array($this->status, ['pending', 'confirmed']);
+    }
+
+    public function isDelivered(): bool
+    {
+        return $this->status === 'delivered';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($order) {
+            $order->order_number = 'MK' . date('Ymd') . strtoupper(substr(uniqid(), -6));
+        });
     }
 }
 

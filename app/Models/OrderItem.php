@@ -9,21 +9,9 @@ class OrderItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'order_id', 'menu_id', 'name',
-        'quantity', 'price', 'options', 'notes',
-    ];
+    protected $fillable = ['order_id', 'menu_id', 'menu_name', 'menu_image', 'quantity', 'unit_price', 'total_price', 'selected_options', 'notes'];
 
-    protected $casts = [
-        'quantity' => 'integer',
-        'price' => 'decimal:2',
-        'options' => 'array',
-    ];
-
-    public function order()
-    {
-        return $this->belongsTo(Order::class);
-    }
+    protected $casts = ['selected_options' => 'array', 'unit_price' => 'decimal:2', 'total_price' => 'decimal:2'];
 
     public function menu()
     {

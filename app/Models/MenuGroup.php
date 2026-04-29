@@ -9,13 +9,7 @@ class MenuGroup extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'restaurant_id', 'name', 'sort_order',
-    ];
-
-    protected $casts = [
-        'sort_order' => 'integer',
-    ];
+    protected $fillable = ['restaurant_id', 'name', 'description', 'sort_order', 'is_active'];
 
     public function restaurant()
     {
@@ -24,7 +18,7 @@ class MenuGroup extends Model
 
     public function menus()
     {
-        return $this->hasMany(Menu::class)->orderBy('sort_order');
+        return $this->hasMany(Menu::class)->where('is_available', true)->orderBy('sort_order');
     }
 }
 

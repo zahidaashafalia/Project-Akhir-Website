@@ -9,15 +9,9 @@ class Cart extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id', 'restaurant_id', 'menu_id',
-        'quantity', 'selected_options', 'notes',
-    ];
+    protected $fillable = ['user_id', 'restaurant_id', 'menu_id', 'quantity', 'selected_options', 'notes', 'unit_price'];
 
-    protected $casts = [
-        'quantity' => 'integer',
-        'selected_options' => 'array',
-    ];
+    protected $casts = ['selected_options' => 'array', 'unit_price' => 'decimal:2'];
 
     public function user()
     {
@@ -32,6 +26,12 @@ class Cart extends Model
     public function menu()
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    public function getTotalPriceAttribute(): float
+    {
+        $optionTotal = collect($this->selected_options ?? [])->sum('additional_price');
+        return ($this->unit_price + $optionTotal) * $this->quantity;
     }
 }
 
