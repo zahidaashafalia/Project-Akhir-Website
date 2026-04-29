@@ -24,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        // Register view namespaces
+        \Illuminate\Support\Facades\View::addNamespace('layouts', resource_path('views/layouts'));
+        \Illuminate\Support\Facades\View::addNamespace('pages', resource_path('views/pages'));
+
+        // Register anonymous component namespaces
+        \Illuminate\Support\Facades\Blade::anonymousComponentPath(resource_path('views/components/layouts'), 'layouts');
+        \Illuminate\Support\Facades\Blade::anonymousComponentPath(resource_path('views/pages'), 'pages');
     }
 
     /**
